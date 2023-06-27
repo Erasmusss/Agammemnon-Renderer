@@ -1,0 +1,23 @@
+{
+  "name": "Agammemnon-Renderer",
+  "version": "0.3.1",
+  "description": "Version 0.3.1 of a Render-hosted 3d multiclient renderer",
+  "main": "server/app.js",
+  "author": "Erasmusss",
+  "license": "MIT",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22",
+    "serve-favicon": "^2.5.0",
+    "three": "^0.153.0",
+    "three-js": "^79.0.0",
+    "uuid": "^9.0.0",
+    "ws": "^8.13.0"
+  },
+  "scripts": {
+    "start": "node server/app.js",
+    "debug": "nodemon server/app.js"
+  }
+}
