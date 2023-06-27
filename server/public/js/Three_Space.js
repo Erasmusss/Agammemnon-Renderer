@@ -140,6 +140,7 @@ export class ThreeSpace {
             let options = data.options;
             let boxGeo = new THREE.BoxGeometry(data.size, data.size, data.size);
             let boxMat = new THREE.MeshStandardMaterial({ color:options.color, wireframe: options.wireframe});
+            boxMat.side = THREE.DoubleSide;
             let boxMesh = new THREE.Mesh(boxGeo, boxMat);
             boxMesh.position.set(data.pos.x, data.pos.y, data.pos.z);
             boxMesh.rotation.set(data.quat._x, data.quat._y, data.quat._z, data.quat._order);

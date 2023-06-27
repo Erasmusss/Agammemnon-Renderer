@@ -3,7 +3,7 @@ const http = require('http');
 const uuid = require('uuid');
 
 module.exports = class WsServer{
-    constructor(app, main){
+    constructor(app){
         this._httpServer = http.createServer(app);
         let server = this._httpServer;
         this._wss = new WebSocket.Server({ server });
