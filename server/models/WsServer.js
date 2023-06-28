@@ -31,7 +31,7 @@ module.exports = class WsServer{
                     }
                 }));
                 if((Date.now()-ws.latestPing) >= 1000){
-                    this._data.players.filter( player => {
+                    this._data.players = this._data.players.filter( player => {
                         return player.uuid !== ws.uuid;
                     });
                     console.log(`Disconnected from ${ws._socket.remoteAddress} with id ${ws.uuid}.`);
