@@ -29,8 +29,8 @@ export class ThreeSpace {
 
         const fov = 60;
         const aspect = 1920 / 1080;
-        const near = 1.0;
-        const far = 1000.0;
+        const near = 0.1;
+        const far = 2000.0;
         this._camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
         this._camera.position.set(75, 20, 0);
         this._camera.name = "CAMERA";
@@ -77,8 +77,9 @@ export class ThreeSpace {
             new THREE.MeshStandardMaterial({
             color: 0x818589,
             metalness:1.0,
+            side: THREE.DoubleSide,
         }));
-
+        plane.name = "TERRAIN_PLANE";
         plane.castShadow = false;
         plane.receiveShadow = true;
         plane.rotation.x = -Math.PI / 2;
@@ -108,6 +109,10 @@ export class ThreeSpace {
                 case 'KeyD':
                    this._keys['d'] = true;
                     break;
+                case 'Space':
+                case ' ':
+                    this._keys[' '] = true;
+                    break;
             }
         };
 
@@ -129,6 +134,10 @@ export class ThreeSpace {
                 case 'KeyD':
                    this._keys['d'] = false;
                     break;
+                case 'Space':
+                case ' ':
+                    this._keys[' '] = false;
+                    break;
             }
         };
         document.addEventListener( 'keydown', onKeyDown );
@@ -146,6 +155,7 @@ export class ThreeSpace {
             boxMesh.rotation.set(data.quat._x, data.quat._y, data.quat._z, data.quat._order);
             boxMesh.uuid = data.uuid;
             boxMesh.name = `User at ${data.address}`;
+            if(boxMesh.uuid == this._WS_Space.uuid)boxMesh.visible = false;
             return boxMesh;
         });
 
@@ -173,9 +183,19 @@ export class ThreeSpace {
                 this._pdirection.z = (this._keys['w']==true ? 1 : 0) - (this._keys['s']==true ? 1 : 0);
 				this._pdirection.x = (this._keys['d']==true ? 1 : 0) - (this._keys['a']==true ? 1 : 0);
 				this._pdirection.normalize();
+                this.groundplane = this._terrain.getObjectByName("TERRAIN_PLANE");
+                if(this._keys[' ']) this._pvelocity.y += 3;
+                if(!this._keys[' '] && this._camera.position.y > this.groundplane.position.y){
+                    if(this._camera.position.y - this.groundplane.position.y <= 10){
+                        this._pvelocity.y = 0;
+                    }else{
+                        this._pvelocity.y -= 3;
+                    }
+                }
                 if(this._keys['w'] || this._keys['s']) this._pvelocity.z -= this._pdirection.z * 400.0 * delta;
 				if(this._keys['a'] || this._keys['d']) this._pvelocity.x -= this._pdirection.x * 400.0 * delta;
                 this._controls.moveForward(this._pvelocity.z * -0.1);
+                this._camera.position.y += this._pvelocity.y * 0.1;
                 this._controls.moveRight(this._pvelocity.x * -0.1);
             }
             this._prevTime = time;
@@ -200,13 +220,13 @@ export class ThreeSpace {
                     return obj.uuid == object.uuid;
                 })[0];
                 objectMain.position.set(object.pos.x, object.pos.y, object.pos.z);
-                objectMain.rotation.set(object.quat.x, object.quat.y, object.quat.z);
+                objectMain.rotation.set(object.quat._x, object.quat._y, object.quat._z, object.quat._order);
                 //potentially add more physics stuff
             }else{
                 //create new object
                 let mesh = this._models[object.model](object);
                 mesh.castShadow = true;
-                this._scene.add(mesh);;
+                this._scene.add(mesh);
             }
         });
     }

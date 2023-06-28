@@ -19,7 +19,7 @@ export class WS_Space{
                 pos: this._threespace._camera.position,
                 quat: this._threespace._camera.rotation,
                 model:"BOX",
-                size:3,
+                size:10,
                 options: {
                     color:0x0006b1,
                     wireframe:false,
@@ -40,7 +40,7 @@ export class WS_Space{
             this.playerRegistered = true;
             setInterval(() => {
                 this.requestWorldData();
-            }, 500);
+            }, 50);
             return null;
         });
 
@@ -50,7 +50,7 @@ export class WS_Space{
         });
 
         this.addResponse("playerDisconnect", (data) => {
-            let puuid = data.data.uuid;
+            let puuid = data.uuid;
             this._players = this._players.filter(player => {
                 return player.uuid !== puuid;
             });
