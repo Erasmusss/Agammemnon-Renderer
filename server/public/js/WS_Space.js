@@ -6,7 +6,7 @@ export class WS_Space{
         this._players = [];
         this._responses = {};
 
-        this._ws = new WebSocket(`ws://${window.location.hostname}:${window.location.port}/main`);
+        this._ws = new WebSocket(`wss://${window.location.hostname}:${window.location.port}/main`);
 
         this.addResponse("Connection", (data) => {
             this.uuid = data.uuid;

@@ -18,7 +18,7 @@ app.get('/posx.jpg', (req,res) => res.sendFile(`public/assets/images/skybox/posx
 app.get('/posy.jpg', (req,res) => res.sendFile(`public/assets/images/skybox/posy.jpg`, {root:__dirname}));
 app.get('/posz.jpg', (req,res) => res.sendFile(`public/assets/images/skybox/posz.jpg`, {root:__dirname}));
 
-app.get('/main', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(`${__dirname}/public/html/main.html`);
 });
 
