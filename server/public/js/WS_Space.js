@@ -13,12 +13,15 @@ export class WS_Space{
             this._players = data.worldData.players;
             this.address = data.address;
             let time = Date.now();
+            //set model
+            let modelArray = ["BOX", "SPHERE"];
+            let modelShape = modelArray[Math.round(Math.random())*(modelArray.length-1)];
             let modeldata = {
                 code:200,
                 uuid:this.uuid,
                 pos: this._threespace._camera.position,
                 quat: this._threespace._camera.rotation,
-                model:"BOX",
+                model:modelShape,
                 size:10,
                 options: {
                     color:0x0006b1,

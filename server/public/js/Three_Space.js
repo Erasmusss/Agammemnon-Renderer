@@ -159,6 +159,20 @@ export class ThreeSpace {
             return boxMesh;
         });
 
+        this.addModel("SPHERE", (data) => {
+            let options = data.options;
+            let modelGeo = new THREE.SphereGeometry(data.size, 100, 100);
+            let modelMat = new THREE.MeshStandardMaterial({ color:options.color, wireframe: options.wireframe});
+            modelMat.side = THREE.DoubleSide;
+            let matMesh = new THREE.Mesh(modelGeo, modelMat);
+            matMesh.position.set(data.pos.x, data.pos.y, data.pos.z);
+            matMesh.rotation.set(data.quat._x, data.quat._y, data.quat._z, data.quat._order);
+            matMesh.uuid = data.uuid;
+            matMesh.name = `Uset at ${data.address}`;
+            if(matMesh.uuid == this._WS_Space.uuid)matMesh.visible = false;
+            return matMesh;
+        });
+
         this._terrain.visible = true;
 
         this._scene.add(this._terrain);
