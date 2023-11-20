@@ -203,10 +203,10 @@ export class ThreeSpace {
                     if(this._keys[' '] && this.pjump){
                         this._pvelocity.y += 30;
                         this.pjump = false;
-                    }else if(this._camera.position.y <= this.groundplane.position.y+3){
+                    }else if(this._camera.position.y <= this.groundplane.position.y+10){
                         this._pvelocity.y = 0;
                         this.pjump = true;
-                    }else if(this._camera.position.y > this.groundplane.position.y+3){
+                    }else if(this._camera.position.y > this.groundplane.position.y+10){
                         this._pvelocity.y -= 3;
                     }
                 }
