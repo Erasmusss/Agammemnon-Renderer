@@ -86,6 +86,7 @@ export class ThreeSpace {
         this._terrain.add(plane);
 
         //movement controls
+        this.pjump = true;
         this._pdirection = new THREE.Vector3();
         this._pvelocity = new THREE.Vector3(0,0,0);
         this._prevTime = performance.now();
@@ -198,10 +199,15 @@ export class ThreeSpace {
 				this._pdirection.x = (this._keys['d']==true ? 1 : 0) - (this._keys['a']==true ? 1 : 0);
 				this._pdirection.normalize();
                 this.groundplane = this._terrain.getObjectByName("TERRAIN_PLANE");
-                if(this._keys[' ']) this._pvelocity.y += 3;
+                console.log(this.pjump);
                 if(!this._keys[' '] && this._camera.position.y > this.groundplane.position.y){
+                    if(this._keys[' '] && this.pjump){
+                        this._pvelocity.y += 3;
+                        this.pjump = false;
+                    }
                     if(this._camera.position.y <= 10){
                         this._pvelocity.y = 0;
+                        this.pjump = true;
                     }else{
                         this._pvelocity.y -= 3;
                     }
