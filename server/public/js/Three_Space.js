@@ -12,6 +12,15 @@ export class ThreeSpace {
             antialias:true,
             alpha:true,
         });
+        /*          Neat idea, but will have to rework entire camera/playerobject system
+                        -possible workaround is adding a second camera for third person/offset
+        this._vectoroffset = new THREE.Vector3(0,0,0);
+        this._quatoffset = new THREE.Quaternion(0,0,0);
+
+        this.setOffset = (vector, quat) => {
+            this._vectoroffset = vector;
+            this._quatoffset = quat;
+        }*/
 
         this._threejs.shadowMap.enabled = true;
         this._threejs.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -26,6 +35,8 @@ export class ThreeSpace {
 
         this._terrain = new THREE.Group();
         this._terrain.name = "TERRAIN";
+
+        this.SPEED = 100.0;
 
         const fov = 60;
         const aspect = 1920 / 1080;
@@ -193,8 +204,8 @@ export class ThreeSpace {
             const time = performance.now();
             if(this._controls.isLocked === true){
                 const delta = (time - this._prevTime) / 1000;
-                this._pvelocity.x -= this._pvelocity.x * 10.0 * delta;
-				this._pvelocity.z -= this._pvelocity.z * 10.0 * delta;
+                this._pvelocity.x -= this._pvelocity.x * (this.SPEED/10) * delta;
+				this._pvelocity.z -= this._pvelocity.z * (this.SPEED/10) * delta;
                 this._pdirection.z = (this._keys['w']==true ? 1 : 0) - (this._keys['s']==true ? 1 : 0);
 				this._pdirection.x = (this._keys['d']==true ? 1 : 0) - (this._keys['a']==true ? 1 : 0);
 				this._pdirection.normalize();
@@ -210,8 +221,8 @@ export class ThreeSpace {
                         this._pvelocity.y -= 3;
                     }
                 }
-                if(this._keys['w'] || this._keys['s']) this._pvelocity.z -= this._pdirection.z * 10.0 * delta;
-				if(this._keys['a'] || this._keys['d']) this._pvelocity.x -= this._pdirection.x * 10.0 * delta;
+                if(this._keys['w'] || this._keys['s']) this._pvelocity.z -= this._pdirection.z * this.SPEED * delta;
+				if(this._keys['a'] || this._keys['d']) this._pvelocity.x -= this._pdirection.x * this.SPEED * delta;
                 this._controls.moveForward(this._pvelocity.z * -0.1);
                 this._camera.position.y += this._pvelocity.y * 0.1;
                 this._controls.moveRight(this._pvelocity.x * -0.1);
