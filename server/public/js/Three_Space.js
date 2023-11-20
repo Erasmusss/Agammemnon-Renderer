@@ -199,20 +199,21 @@ export class ThreeSpace {
 				this._pdirection.x = (this._keys['d']==true ? 1 : 0) - (this._keys['a']==true ? 1 : 0);
 				this._pdirection.normalize();
                 this.groundplane = this._terrain.getObjectByName("TERRAIN_PLANE");
-                if(!this._keys[' '] && this._camera.position.y > this.groundplane.position.y){
+                console.log(this._camera.position.y <= this.groundplane.position.y)
+                console.log(this._pvelocity);
+                if(this._camera.position.y >= this.groundplane.position.y){
                     if(this._keys[' '] && this.pjump){
-                        this._pvelocity.y += 3;
+                        this._pvelocity.y += 30;
                         this.pjump = false;
-                    }
-                    if(this._camera.position.y <= 10){
+                    }else if(this._camera.position.y <= this.groundplane.position.y+3){
                         this._pvelocity.y = 0;
                         this.pjump = true;
-                    }else{
+                    }else if(this._camera.position.y > this.groundplane.position.y+3){
                         this._pvelocity.y -= 3;
                     }
                 }
-                if(this._keys['w'] || this._keys['s']) this._pvelocity.z -= this._pdirection.z * 400.0 * delta;
-				if(this._keys['a'] || this._keys['d']) this._pvelocity.x -= this._pdirection.x * 400.0 * delta;
+                if(this._keys['w'] || this._keys['s']) this._pvelocity.z -= this._pdirection.z * 10.0 * delta;
+				if(this._keys['a'] || this._keys['d']) this._pvelocity.x -= this._pdirection.x * 10.0 * delta;
                 this._controls.moveForward(this._pvelocity.z * -0.1);
                 this._camera.position.y += this._pvelocity.y * 0.1;
                 this._controls.moveRight(this._pvelocity.x * -0.1);
@@ -222,7 +223,6 @@ export class ThreeSpace {
             this.updateSpace(this._WS_Space._players);
 
             this._threejs.render(this._scene, this._camera);
-
 
             this._RAF();
         });
