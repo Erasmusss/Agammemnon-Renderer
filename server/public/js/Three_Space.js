@@ -199,8 +199,6 @@ export class ThreeSpace {
 				this._pdirection.x = (this._keys['d']==true ? 1 : 0) - (this._keys['a']==true ? 1 : 0);
 				this._pdirection.normalize();
                 this.groundplane = this._terrain.getObjectByName("TERRAIN_PLANE");
-                console.log(this._camera.position.y <= this.groundplane.position.y)
-                console.log(this._pvelocity);
                 if(this._camera.position.y >= this.groundplane.position.y){
                     if(this._keys[' '] && this.pjump){
                         this._pvelocity.y += 30;
