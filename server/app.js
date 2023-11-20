@@ -9,7 +9,7 @@ let wss = new WsServer(app);
 
 app.use(express.static(`server/public`));
 
-app.use(favicon(`${__dirname}/public/assets/images/xperion.ico`));
+app.use(favicon(`${__dirname}/public/assets/xperion.ico`));
 
 app.get('/negx.jpg', (req,res) => res.sendFile(`public/assets/images/skybox/negx.jpg`, {root:__dirname}));
 app.get('/negy.jpg', (req,res) => res.sendFile(`public/assets/images/skybox/negy.jpg`, {root:__dirname}));

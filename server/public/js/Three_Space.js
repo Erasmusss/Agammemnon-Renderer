@@ -168,7 +168,7 @@ export class ThreeSpace {
             matMesh.position.set(data.pos.x, data.pos.y, data.pos.z);
             matMesh.rotation.set(data.quat._x, data.quat._y, data.quat._z, data.quat._order);
             matMesh.uuid = data.uuid;
-            matMesh.name = `Uset at ${data.address}`;
+            matMesh.name = `User at ${data.address}`;
             if(matMesh.uuid == this._WS_Space.uuid)matMesh.visible = false;
             return matMesh;
         });
@@ -200,7 +200,7 @@ export class ThreeSpace {
                 this.groundplane = this._terrain.getObjectByName("TERRAIN_PLANE");
                 if(this._keys[' ']) this._pvelocity.y += 3;
                 if(!this._keys[' '] && this._camera.position.y > this.groundplane.position.y){
-                    if(this._camera.position.y - this.groundplane.position.y <= 10){
+                    if(this._camera.position.y <= 10){
                         this._pvelocity.y = 0;
                     }else{
                         this._pvelocity.y -= 3;
