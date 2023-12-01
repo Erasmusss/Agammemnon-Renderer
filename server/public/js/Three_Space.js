@@ -55,6 +55,8 @@ export class ThreeSpace {
 
         this._scene = new THREE.Scene();
 
+        this._scene.add(this.player_point);
+
         let light = new THREE.DirectionalLight(0xFFFFFF, 1.0);
         light.position.set(20, 100, 10);
         light.target.position.set(0, 0, 0);
