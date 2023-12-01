@@ -18,7 +18,8 @@ export class ThreeSpace {
         );
         this._pointgeometry = new THREE.BufferGeometry()
             .setAttribute('position', new THREE.BufferAttribute(this._pointvertices, 3));
-        this.player_point = new THREE.Points(this._pointgeometry);
+        this._pointMaterial = new THREE.PointsMaterial({size: 1, sizeAttenuation:false});
+        this.player_point = new THREE.Points(this._pointgeometry, this._pointmaterial);
 
         this._vectoroffset = new THREE.Vector3(0,0,0);
         this._quatoffset = new THREE.Quaternion(0,0,0);
