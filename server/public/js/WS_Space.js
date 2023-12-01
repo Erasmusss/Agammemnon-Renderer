@@ -19,8 +19,8 @@ export class WS_Space{
             let modeldata = {
                 code:200,
                 uuid:this.uuid,
-                pos: this._threespace._camera.position,
-                quat: this._threespace._camera.rotation,
+                pos: this._threespace.player_point.position,
+                quat: this._threespace.player_point.rotation,
                 model:modelShape,
                 size:10,
                 options: {
@@ -102,8 +102,8 @@ export class WS_Space{
             data:{
                 data:{
                     client:{
-                        pos: this._threespace._camera.position,
-                        quat: this._threespace._camera.rotation,
+                        pos: this._threespace.player_point.position,
+                        quat: this._threespace.player_point.rotation,
                         uuid: this.uuid,
                     }
                 },

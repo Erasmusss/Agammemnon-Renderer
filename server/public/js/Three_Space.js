@@ -12,15 +12,21 @@ export class ThreeSpace {
             antialias:true,
             alpha:true,
         });
-        /*          Neat idea, but will have to rework entire camera/playerobject system
-                        -possible workaround is adding a second camera for third person/offset
+
+        this._pointvertices = new Float32Array(
+            75.0, 20.0, 0.0
+        );
+        this._pointgeometry = new THREE.BufferGeometry()
+            .setAttribute('position', new THREE.BufferAttribute(this._pointvertices, 3));
+        this.player_point = new THREE.Points(this._pointgeometry);
+
         this._vectoroffset = new THREE.Vector3(0,0,0);
         this._quatoffset = new THREE.Quaternion(0,0,0);
 
         this.setOffset = (vector, quat) => {
             this._vectoroffset = vector;
             this._quatoffset = quat;
-        }*/
+        }
 
         this._threejs.shadowMap.enabled = true;
         this._threejs.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -43,7 +49,8 @@ export class ThreeSpace {
         const near = 0.1;
         const far = 2000.0;
         this._camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-        this._camera.position.set(75, 20, 0);
+        this._camera.position.set(75+this._vectoroffset.x, 20+this._vectoroffset.y, 0+this._vectoroffset.z);
+        this._camera.rotation.set(0.0+this._quatoffset.x, 0.0+this._quatoffset.y, 0.0+this._quatoffset.z);
         this._camera.name = "CAMERA";
 
         this._scene = new THREE.Scene();
@@ -210,24 +217,30 @@ export class ThreeSpace {
 				this._pdirection.x = (this._keys['d']==true ? 1 : 0) - (this._keys['a']==true ? 1 : 0);
 				this._pdirection.normalize();
                 this.groundplane = this._terrain.getObjectByName("TERRAIN_PLANE");
-                if(this._camera.position.y >= this.groundplane.position.y){
+                if(this.player_point.position.y >= this.groundplane.position.y){
                     if(this._keys[' '] && this.pjump){
                         this._pvelocity.y += 30;
                         this.pjump = false;
-                    }else if(this._camera.position.y <= this.groundplane.position.y+10){
+                    }else if(this.player_point.position.y <= this.groundplane.position.y+10){
                         this._pvelocity.y = 0;
                         this.pjump = true;
-                    }else if(this._camera.position.y > this.groundplane.position.y+10){
+                    }else if(this.player_point.position.y > this.groundplane.position.y+10){
                         this._pvelocity.y -= 3;
                     }
                 }
                 if(this._keys['w'] || this._keys['s']) this._pvelocity.z -= this._pdirection.z * this.SPEED * delta;
 				if(this._keys['a'] || this._keys['d']) this._pvelocity.x -= this._pdirection.x * this.SPEED * delta;
                 this._controls.moveForward(this._pvelocity.z * -0.1);
-                this._camera.position.y += this._pvelocity.y * 0.1;
+                this.player_point.position.y += this._pvelocity.y * 0.1;
                 this._controls.moveRight(this._pvelocity.x * -0.1);
             }
             this._prevTime = time;
+
+            this._camera.position.set(
+                this._vectoroffset+this.player_point.x,
+                this._vectoroffset+this.player_point.y,
+                this._vectoroffset+this.player_point.z
+                );
 
             this.updateSpace(this._WS_Space._players);
 
