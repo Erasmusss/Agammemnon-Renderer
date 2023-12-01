@@ -54,6 +54,7 @@ export class WS_Space{
 
         this.addResponse("playerDisconnect", (data) => {
             let puuid = data.uuid;
+            console.log(data);
             this._threespace._scene.remove(this._threespace._scene.getObjectById(puuid));
             console.log(this._threespace._scene.getObjectById(puuid))
         });
